@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Runner 1",
+    "currentDistance": 0,
+    "status": "running"
+  },
+  {
+    "name": "Runner 2",
+    "currentDistance": 0,
+    "status": "active"
+  },
+  {
+    "name": "Runner 3",
+    "currentDistance": 0,
+    "status": "active"
+  }
+]
