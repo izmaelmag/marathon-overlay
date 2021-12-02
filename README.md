@@ -24,7 +24,12 @@ interface Runner {
   status: 'running' | 'finished' | 'paused'
 }
 
-type WebSocketResponse = Runner[]
+type WebSocketResponse = {
+  runners: Runner[]      // List of runners
+  seconds: number        // Seconds from the start of run
+  donationGoal: number   // Donation goal
+  donates: number        // Current donations sum
+}
 ```
 
-Use **`server/index.js`** as a reference
+Use **`server/index.js`** and **`app/types.d.ts`** as a references
