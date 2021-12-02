@@ -4,33 +4,45 @@ const runners = require("./dataSample.json");
 // Create new WebSocket server at http://localhost:8787
 const server = new WS.Server({ port: 8787 });
 
-// SOcket connection instances
-const sockets = [];
+// Timer state
+let seconds = 0;
+
+// Donations count
+let donates = 0;
+
+// Donation goal constant
+const donationGoal = 30000
 
 // Handle socket connection
 server.on("connection", (socket) => {
-  sockets.push(socket);
-
-  // When a socket client closes, or disconnects, remove it from the array.
-  socket.on("close", function () {
-    sockets = sockets.filter((s) => s !== socket);
-  });
-
   // Fake runners
   setInterval(() => {
-    // Randomly update runners data and serialize it into JSON string
-    const DATA = JSON.stringify(
-      runners.map((runner) => {
-        const increment = Math.random();
+    // Set up response
+    const response = {
+      seconds,
+      donationGoal,
+      donates: Math.round(donates),
+      runners: runners.map((runner) => {
+        const increment = Math.random()/50;
 
         return {
           ...runner,
           currentDistance: (runner.currentDistance += increment),
         };
-      })
-    );
+      }),
+    };
+
+    // Serialise response to JSON string
+    const DATA = JSON.stringify(response);
 
     // Send serialized data to the connected sockets
-    sockets.map((socket) => socket.send(DATA));
+    socket.send(DATA);
+
+    // Increment time
+    seconds++
   }, 1000);
+
+  setInterval(() => {
+    donates += 500 + Math.random() * 500
+  }, 3000 + Math.random() * 5000)
 });
