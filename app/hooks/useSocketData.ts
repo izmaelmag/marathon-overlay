@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 
-const useSocketData = (uri: string) => {
+const useSocketData = (uri: string): [WebSocketResponse, boolean] => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [data, setData] = useState<Record<string, unknown>>({});
+
+  // Initialize response data
+  const [data, setData] = useState<WebSocketResponse>({
+    runners: [],
+    donationGoal: 0,
+    seconds: 0,
+    donates: 0,
+  });
 
   // Create socket on app start
   useEffect(() => setSocket(new WebSocket(uri)), []);
